@@ -33,65 +33,89 @@ class _GraphScreenState extends State<GraphScreen> {
   Company? data;
   calldata() async {
     data = await Repository().getData();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                color: Colors.grey)),
-        title: const Text(
-          'Solutions 1313',
-          style: TextStyle(color: Colors.black),
-        ),
-        elevation: 0,
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Column(
-          children: [
-            Neumorphic(
-              style: NeumorphicStyle(
-                  shape: NeumorphicShape.flat,
-                  boxShape: NeumorphicBoxShape.roundRect(
-                    BorderRadius.circular(24),
-                  ),
-                  depth: 4,
-                  lightSource: LightSource.topLeft,
-                  color: Colors.white),
-              child: Container(
-                height: 300,
-                width: double.infinity,
-                child: SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
-                  // Chart title
-                  // title: ChartTitle(text: ''),
-                  // Enable legend
-                  legend: Legend(isVisible: true),
-                  // Enable tooltip
-                  tooltipBehavior: _tooltipBehavior,
-                  series: <LineSeries<TimeSeriesDaily, String>>[
-                    LineSeries<TimeSeriesDaily, String>(
-                        dataSource: <TimeSeriesDaily>[],
-                        xValueMapper: (TimeSeriesDaily series, _) =>
-                            series.the6Volume,
-                        yValueMapper: (TimeSeriesDaily series, _) =>
-                            int.parse(series.the6Volume.toString()),
-                        // Enable data label
-                        dataLabelSettings: DataLabelSettings(isVisible: true))
-                  ],
-                ),
+    return data == null
+        ? Scaffold(
+            backgroundColor: Colors.white,
+            body: Container(
+              child: Center(
+                child: CircularProgressIndicator(
+                    strokeWidth: 0.4, color: Colors.black),
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                      color: Colors.grey)),
+              title: const Text(
+                'Solutions 1313',
+                style: TextStyle(color: Colors.black),
+              ),
+              elevation: 0,
+            ),
+            body: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Column(
+                children: [
+                  Neumorphic(
+                    style: NeumorphicStyle(
+                        shape: NeumorphicShape.flat,
+                        boxShape: NeumorphicBoxShape.roundRect(
+                          BorderRadius.circular(24),
+                        ),
+                        depth: 4,
+                        lightSource: LightSource.topLeft,
+                        color: Colors.white),
+                    child: Container(
+                      height: 300,
+                      width: double.infinity,
+                      child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(),
+                        // Chart title
+                        // title: ChartTitle(text: ''),
+                        // Enable legend
+                        legend: Legend(isVisible: true),
+                        // Enable tooltip
+                        tooltipBehavior: _tooltipBehavior,
+                        series: <LineSeries<Company, String>>[
+                          LineSeries<Company, String>(
+                              dataSource: <Company>[
+                                Company(
+                                    metaData: data!.metaData,
+                                    timeSeriesDaily: data!.timeSeriesDaily),
+                                Company(
+                                    metaData: data!.metaData,
+                                    timeSeriesDaily: data!.timeSeriesDaily),
+                                Company(
+                                    metaData: data!.metaData,
+                                    timeSeriesDaily: data!.timeSeriesDaily),
+                              ],
+                              xValueMapper: (Company series, _) =>
+                                  series.timeSeriesDaily.keys.first,
+                              yValueMapper: (Company series, _) => int.parse(
+                                  series.timeSeriesDaily.entries.first.value
+                                      .the6Volume
+                                      .toString()),
+                              // Enable data label
+                              dataLabelSettings:
+                                  const DataLabelSettings(isVisible: true))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }

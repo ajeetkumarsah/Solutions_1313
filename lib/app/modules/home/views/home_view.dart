@@ -31,6 +31,7 @@ class _HomeViewState extends State<HomeView> {
     debugPrint('==>API project id' + authGoogle.getProjectId);
 
     AIResponse aiResponse = await dialogflow.detectIntent(query);
+    print(aiResponse.getMessage());
     if (aiResponse == null || aiResponse.getMessage() == null) {
       debugPrint('==>API response is null :(');
     } else {
@@ -275,7 +276,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ),
-          SizedBox(height: 15.0)
+          const SizedBox(height: 15.0)
         ],
       ),
     );
@@ -285,7 +286,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget chat(String message, int data) {
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
         mainAxisAlignment:
             data == 1 ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -352,24 +353,6 @@ class _HomeViewState extends State<HomeView> {
                 )
               : Container(),
         ],
-      ),
-    );
-  }
-}
-
-class NMButton extends StatelessWidget {
-  final bool down;
-  final IconData icon;
-  const NMButton({required this.down, required this.icon});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 55,
-      height: 55,
-      decoration: down ? nMboxInvert : nMbox,
-      child: Icon(
-        icon,
-        color: down ? fCD : fCL,
       ),
     );
   }

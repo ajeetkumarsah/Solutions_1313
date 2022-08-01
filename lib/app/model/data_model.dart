@@ -15,8 +15,9 @@ class Company {
 
   Map<String, dynamic> toJson() => {
         "Meta Data": metaData.toJson(),
-        "Time Series (Daily)": Map.from(timeSeriesDaily)
-            .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
+        "Time Series (Daily)": Map.from(timeSeriesDaily).map(
+          (k, v) => MapEntry<String, dynamic>(k, v.toJson()),
+        ),
       };
 }
 
